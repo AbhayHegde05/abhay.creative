@@ -14,11 +14,6 @@ head_sampling_rate = 1
 persist = true
 invocation_logs = true
 
-[observability.traces]
-enabled = false
-persist = true
-head_sampling_rate = 1
-
 # 1. Ensure the Email binding is properly defined
 # Note: Cloudflare Email Binding requires specific configuration depending on your plan
 [[send_email]]
