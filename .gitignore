@@ -2,17 +2,22 @@
 .env
 .env.local
 .env.*.local
-server/.env
-server/.env.local
+backend/.env
+backend/.env.local
+frontend/.env
+frontend/.env.local
 
 # Dependencies
 node_modules/
-server/node_modules/
+backend/node_modules/
+frontend/node_modules/
 
 # Build Output
 dist/
 build/
 .vite/
+frontend/dist/
+frontend/.vite/
 
 # Logs
 npm-debug.log*
