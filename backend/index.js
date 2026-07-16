@@ -47,7 +47,9 @@ async function handleContact(request, env, corsHeaders) {
   let storedInDatabase = false;
   if (env.SUPABASE_URL && env.SUPABASE_KEY) {
     try {
-      const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY);
+      const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY, {
+        auth: { persistSession: false, autoRefreshToken: false },
+      });
       const { error } = await supabase
         .from('contact')
         .insert({
@@ -57,7 +59,7 @@ async function handleContact(request, env, corsHeaders) {
           message,
           created_at: new Date().toISOString()
         });
-      
+
       if (!error) {
         storedInDatabase = true;
       } else {
@@ -89,15 +91,21 @@ async function handleContact(request, env, corsHeaders) {
 
   const emailHtml = `<pre style="white-space:pre-wrap;font-family:inherit;">${escapeHtml(emailText)}</pre>`;
 
-  await env.EMAIL.send({
-    to,
-    from: env.CONTACT_FROM || env.EMAIL_FROM || to,
-    subject: emailSubject,
-    text: emailText,
-    html: emailHtml,
-  });
+  let emailNotification = false;
+  try {
+    await env.EMAIL.send({
+      to,
+      from: env.CONTACT_FROM || env.EMAIL_FROM || to,
+      subject: emailSubject,
+      text: emailText,
+      html: emailHtml,
+    });
+    emailNotification = true;
+  } catch (emailErr) {
+    console.error("Email send failed (DB insert still attempted):", emailErr);
+  }
 
-  return json({ success: true, message: "Message sent successfully!", storedInDatabase, emailNotification: true }, 200, corsHeaders);
+  return json({ success: true, message: "Message sent successfully!", storedInDatabase, emailNotification }, 200, corsHeaders);
 }
 
 async function handleHire(request, env, corsHeaders) {
@@ -119,7 +127,9 @@ async function handleHire(request, env, corsHeaders) {
   let storedInDatabase = false;
   if (env.SUPABASE_URL && env.SUPABASE_KEY) {
     try {
-      const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY);
+      const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY, {
+        auth: { persistSession: false, autoRefreshToken: false },
+      });
       const { error } = await supabase
         .from('hire')
         .insert({
@@ -132,7 +142,7 @@ async function handleHire(request, env, corsHeaders) {
           details,
           created_at: new Date().toISOString()
         });
-      
+
       if (!error) {
         storedInDatabase = true;
       } else {
@@ -167,15 +177,21 @@ async function handleHire(request, env, corsHeaders) {
 
   const emailHtml = `<pre style="white-space:pre-wrap;font-family:inherit;">${escapeHtml(emailText)}</pre>`;
 
-  await env.EMAIL.send({
-    to,
-    from: env.HIRE_FROM || env.EMAIL_FROM || to,
-    subject: emailSubject,
-    text: emailText,
-    html: emailHtml,
-  });
+  let emailNotification = false;
+  try {
+    await env.EMAIL.send({
+      to,
+      from: env.HIRE_FROM || env.EMAIL_FROM || to,
+      subject: emailSubject,
+      text: emailText,
+      html: emailHtml,
+    });
+    emailNotification = true;
+  } catch (emailErr) {
+    console.error("Email send failed (DB insert still attempted):", emailErr);
+  }
 
-  return json({ success: true, message: "Hiring inquiry submitted successfully!", storedInDatabase, emailNotification: true }, 200, corsHeaders);
+  return json({ success: true, message: "Hiring inquiry submitted successfully!", storedInDatabase, emailNotification }, 200, corsHeaders);
 }
 
 function trim(v) {
@@ -198,4 +214,3 @@ function escapeHtml(s) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
-
