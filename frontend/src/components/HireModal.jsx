@@ -37,31 +37,31 @@ export default function HireModal({ isOpen, onClose }) {
         body: JSON.stringify(formData)
       })
 
+      if (!response.ok) {
+        throw new Error(`Server returned status: ${response.status}`)
+      }
+
       const data = await response.json()
 
-      if (response.ok) {
-        setStatus('success')
-        if (data.previewUrl) {
-          setPreviewEmailUrl(data.previewUrl)
-        }
-        // Reset form
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          service: '',
-          budget: '',
-          timeline: '',
-          details: ''
-        })
-      } else {
-        setStatus('error')
-        setErrorMsg(data.error || 'Something went wrong. Please try again.')
+      setStatus('success')
+      if (data.previewUrl) {
+        setPreviewEmailUrl(data.previewUrl)
       }
+      
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        service: '',
+        budget: '',
+        timeline: '',
+        details: ''
+      })
     } catch (err) {
       console.error('Hiring submission error:', err)
       setStatus('error')
-      setErrorMsg('Failed to connect to the server. Make sure the backend is running.')
+      setErrorMsg('Failed to connect to the server. Please ensure the backend is running.')
     }
   }
 
@@ -123,13 +123,12 @@ export default function HireModal({ isOpen, onClose }) {
                 </div>
                 <h2 className="text-3xl font-bold text-text">Inquiry Received!</h2>
                 <p className="text-muted max-w-md mx-auto leading-relaxed">
-                  Thank you for your interest! A hiring request has been registered and an email notification has been dispatched to <span className="text-text font-medium">abhay.creative</span>.
+                  Thank you for your interest! A hiring request has been registered.
                 </p>
 
                 {previewEmailUrl && (
                   <div className="p-4 bg-primary/10 rounded-2xl border border-primary/20 max-w-md mx-auto text-left">
                     <p className="text-xs text-primary font-semibold mb-1">Development Mail Preview:</p>
-                    <p className="text-xs text-muted mb-2">Since you are testing in development, you can view the sent SMTP email at Ethereal:</p>
                     <a
                       href={previewEmailUrl}
                       target="_blank"
@@ -156,168 +155,40 @@ export default function HireModal({ isOpen, onClose }) {
                   <h2 id="hire-modal-title" className="text-2xl sm:text-3xl font-bold text-text">
                     Hire abhay.creative
                   </h2>
-                  <p className="text-sm text-muted mt-1.5">
-                    Fill out details below and let's work together to create something amazing.
-                  </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  {/* Form Fields */}
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <label htmlFor="hire-name" className="text-xs font-medium text-text">
-                        Your Name
-                      </label>
-                      <input
-                        type="text"
-                        id="hire-name"
-                        name="name"
-                        required
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        placeholder="Name or Company"
-                        className="w-full px-4 py-3 rounded-xl bg-card border border-white/10 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all text-text text-sm placeholder:text-muted/40"
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <label htmlFor="hire-email" className="text-xs font-medium text-text">
-                        Email Address
-                      </label>
-                      <input
-                        type="email"
-                        id="hire-email"
-                        name="email"
-                        required
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        placeholder="you@example.com"
-                        className="w-full px-4 py-3 rounded-xl bg-card border border-white/10 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all text-text text-sm placeholder:text-muted/40"
-                      />
-                    </div>
+                    <input type="text" name="name" required value={formData.name} onChange={handleInputChange} placeholder="Name or Company" className="w-full px-4 py-3 rounded-xl bg-card border border-white/10 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all text-text text-sm" />
+                    <input type="email" name="email" required value={formData.email} onChange={handleInputChange} placeholder="you@example.com" className="w-full px-4 py-3 rounded-xl bg-card border border-white/10 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all text-text text-sm" />
                   </div>
-
-                  <div className="space-y-1.5">
-                    <label htmlFor="hire-phone" className="text-xs font-medium text-text">
-                      Phone / WhatsApp <span className="text-muted/50 font-normal">(optional)</span>
-                    </label>
-                    <input
-                      type="tel"
-                      id="hire-phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      placeholder="+91 98765 43210"
-                      className="w-full px-4 py-3 rounded-xl bg-card border border-white/10 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all text-text text-sm placeholder:text-muted/40"
-                    />
-                  </div>
-
+                  <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="+91 98765 43210" className="w-full px-4 py-3 rounded-xl bg-card border border-white/10 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all text-text text-sm" />
+                  
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <label htmlFor="hire-service" className="text-xs font-medium text-text">
-                        Service Required
-                      </label>
-                      <select
-                        id="hire-service"
-                        name="service"
-                        required
-                        value={formData.service}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 rounded-xl bg-card border border-white/10 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all text-text text-sm appearance-none"
-                      >
-                        <option value="">Select a service</option>
-                        <option value="Posters">Premium Posters Collection</option>
-                        <option value="Thumbnails">YouTube Thumbnails</option>
-                        <option value="Full Identity">Social Media Brand Identity</option>
-                        <option value="Consultation">Design Consultation</option>
-                        <option value="Custom Project">Custom Creatives</option>
-                      </select>
-                    </div>
-                    <div className="space-y-1.5">
-                      <label htmlFor="hire-budget" className="text-xs font-medium text-text">
-                        Estimated Budget
-                      </label>
-                      <select
-                        id="hire-budget"
-                        name="budget"
-                        required
-                        value={formData.budget}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 rounded-xl bg-card border border-white/10 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all text-text text-sm appearance-none"
-                      >
-                        <option value="">Select a budget range</option>
-                        <option value="Under $200">Under $200</option>
-                        <option value="$200 - $500">$200 - $500</option>
-                        <option value="$500 - $1000">$500 - $1000</option>
-                        <option value="$1000+">$1000+</option>
-                      </select>
-                    </div>
+                    <select name="service" required value={formData.service} onChange={handleInputChange} className="w-full px-4 py-3 rounded-xl bg-card border border-white/10 text-text text-sm">
+                      <option value="">Select a service</option>
+                      <option value="Posters">Premium Posters</option>
+                      <option value="Custom Project">Custom Creatives</option>
+                    </select>
+                    <select name="budget" required value={formData.budget} onChange={handleInputChange} className="w-full px-4 py-3 rounded-xl bg-card border border-white/10 text-text text-sm">
+                      <option value="">Select budget</option>
+                      <option value="Under $200">Under $200</option>
+                      <option value="$200 - $500">$200 - $500</option>
+                    </select>
                   </div>
-
-                  <div className="space-y-1.5">
-                    <label htmlFor="hire-timeline" className="text-xs font-medium text-text">
-                      Timeline / Deadline
-                    </label>
-                    <input
-                      type="text"
-                      id="hire-timeline"
-                      name="timeline"
-                      value={formData.timeline}
-                      onChange={handleInputChange}
-                      placeholder="e.g., 2 weeks, ASAP, flexible"
-                      className="w-full px-4 py-3 rounded-xl bg-card border border-white/10 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all text-text text-sm placeholder:text-muted/40"
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label htmlFor="hire-details" className="text-xs font-medium text-text">
-                      Project Details & Description
-                    </label>
-                    <textarea
-                      id="hire-details"
-                      name="details"
-                      required
-                      rows={4}
-                      value={formData.details}
-                      onChange={handleInputChange}
-                      placeholder="Describe your vision, target audience, style preferences, or any specific deliverables..."
-                      className="w-full px-4 py-3 rounded-xl bg-card border border-white/10 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all text-text text-sm placeholder:text-muted/40 resize-none"
-                    />
-                  </div>
+                  <textarea name="details" required rows={4} value={formData.details} onChange={handleInputChange} placeholder="Project Details..." className="w-full px-4 py-3 rounded-xl bg-card border border-white/10 focus:border-primary text-text text-sm" />
 
                   {status === 'error' && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 p-3 rounded-xl"
-                    >
+                    <div className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 p-3 rounded-xl">
                       {errorMsg}
-                    </motion.div>
+                    </div>
                   )}
 
                   <div className="pt-2 flex justify-end gap-3">
-                    <button
-                      type="button"
-                      onClick={handleClose}
-                      disabled={status === 'loading'}
-                      className="btn-secondary py-2.5 px-6"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={status === 'loading'}
-                      className="btn-primary py-2.5 px-6 flex items-center gap-2"
-                    >
-                      {status === 'loading' ? (
-                        <>
-                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          Submitting...
-                        </>
-                      ) : (
-                        <>
-                          <FiSend className="w-4 h-4" />
-                          Send Inquiry
-                        </>
-                      )}
+                    <button type="button" onClick={handleClose} disabled={status === 'loading'} className="btn-secondary py-2.5 px-6">Cancel</button>
+                    <button type="submit" disabled={status === 'loading'} className="btn-primary py-2.5 px-6">
+                      {status === 'loading' ? 'Submitting...' : 'Send Inquiry'}
                     </button>
                   </div>
                 </form>
