@@ -1,3 +1,5 @@
+import { MongoClient } from 'mongodb';
+
 export default {
   async fetch(request, env) {
     const corsHeaders = {
@@ -43,17 +45,22 @@ async function handleContact(request, env, corsHeaders) {
   }
 
   let storedInDatabase = false;
-  if (env.MONGODB_WRITE_URL) {
-    const r = await fetch(env.MONGODB_WRITE_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        mongodbUri: env.MONGODB_URI,
-        collection: "contact",
-        document: { name, email, subject, message, createdAt: new Date().toISOString() },
-      }),
+  try {
+    const client = new MongoClient(env.MONGODB_URI);
+    await client.connect();
+    const db = client.db();
+    await db.collection("contact").insertOne({
+      name,
+      email,
+      subject,
+      message,
+      createdAt: new Date().toISOString()
     });
-    storedInDatabase = r.ok;
+    await client.close();
+    storedInDatabase = true;
+  } catch (e) {
+    console.error("Database write failed:", e);
+    storedInDatabase = false;
   }
 
   const to = env.CONTACT_TO || env.EMAIL_TO;
@@ -104,17 +111,25 @@ async function handleHire(request, env, corsHeaders) {
   }
 
   let storedInDatabase = false;
-  if (env.MONGODB_WRITE_URL) {
-    const r = await fetch(env.MONGODB_WRITE_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        mongodbUri: env.MONGODB_URI,
-        collection: "hire",
-        document: { name, email, phone, service, budget, timeline, details, createdAt: new Date().toISOString() },
-      }),
+  try {
+    const client = new MongoClient(env.MONGODB_URI);
+    await client.connect();
+    const db = client.db();
+    await db.collection("hire").insertOne({
+      name,
+      email,
+      phone,
+      service,
+      budget,
+      timeline,
+      details,
+      createdAt: new Date().toISOString()
     });
-    storedInDatabase = r.ok;
+    await client.close();
+    storedInDatabase = true;
+  } catch (e) {
+    console.error("Database write failed:", e);
+    storedInDatabase = false;
   }
 
   const to = env.HIRE_TO || env.EMAIL_TO;
