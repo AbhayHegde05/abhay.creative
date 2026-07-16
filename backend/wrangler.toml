@@ -1,6 +1,7 @@
 name = "abhay-creative-backend"
 main = "index.js"
 compatibility_date = "2026-07-16" # Updated to today's date for compatibility
+compatibility_flags = ["nodejs_compat"]
 workers_dev = true
 
 [observability]
