@@ -25,7 +25,7 @@ name = "EMAIL"
 
 [vars]
 # Frontend origin (Replace * with your actual Pages URL once deployed for security)
-FRONTEND_ORIGIN = "*"
+FRONTEND_ORIGIN = "https://abhay-creative.pages.dev"
 
 # Contact Form settings
 CONTACT_TO = "abhayhegde643@gmail.com"
