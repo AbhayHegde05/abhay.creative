@@ -168,7 +168,7 @@ function escapeHtml(s) {
     .replaceAll("&", "&amp;")
     .replaceAll("<", "<")
     .replaceAll(">", ">")
-    .replaceAll('"', """)
+    .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
 
