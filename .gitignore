@@ -48,3 +48,5 @@ coverage/
 
 # wrangler local cache
 .wrangler/
+
+# Local worker config (holds non-secret vars; secrets are in Cloudflare Dashboard)
