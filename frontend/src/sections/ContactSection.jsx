@@ -110,12 +110,13 @@ export default function ContactSection() {
     setPreviewUrl('')
 
     try {
-      const response = await fetch('/api/contact', {
+      const WORKER_URL = "https://abhay-creative-backend.abhayhegde643.workers.dev"
+      const response = await fetch(`${WORKER_URL}/api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-body: JSON.stringify({
+        body: JSON.stringify({
           name: formState.name,
           email: formState.email,
           subject: formState.project || 'General Inquiry',

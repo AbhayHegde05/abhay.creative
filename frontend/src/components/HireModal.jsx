@@ -28,7 +28,8 @@ export default function HireModal({ isOpen, onClose }) {
     setPreviewEmailUrl('')
 
     try {
-      const response = await fetch('/api/hire', {
+      const WORKER_URL = "https://abhay-creative-backend.abhayhegde643.workers.dev"
+      const response = await fetch(`${WORKER_URL}/api/hire`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
