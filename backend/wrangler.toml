@@ -1,0 +1,12 @@
+name = "abhay-creative-backend"
+main = "index.js"
+compatibility_date = "2026-07-16"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[vars]
+FRONTEND_ORIGIN = "https://abhay-creative.pages.dev"
+CONTACT_TO = "abhayhegde36@gmail.com"
+CONTACT_FROM = "onboarding@resend.dev"
+HIRE_TO = "abhayhegde36@gmail.com"
+HIRE_FROM = "onboarding@resend.dev"
