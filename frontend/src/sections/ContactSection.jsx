@@ -111,6 +111,7 @@ export default function ContactSection() {
 
     try {
       const WORKER_URL = "https://abhay-creative-backend.abhayhegde643.workers.dev"
+      
       const response = await fetch(`${WORKER_URL}/api/contact`, {
         method: 'POST',
         headers: {
@@ -126,18 +127,19 @@ export default function ContactSection() {
         })
       })
 
+      // Check if the server responded successfully
+      if (!response.ok) {
+        throw new Error(`Server returned status: ${response.status}`)
+      }
+
+      // Parse the JSON only if the response was successful
       const data = await response.json()
 
-      if (response.ok) {
-        setStatus('success')
-        if (data.previewUrl) {
-          setPreviewUrl(data.previewUrl)
-        }
-        setFormState({ name: '', email: '', phone: '', project: '', message: '' })
-      } else {
-        setStatus('error')
-        setErrorMsg(data.error || 'Failed to send your message. Please try again.')
+      setStatus('success')
+      if (data.previewUrl) {
+        setPreviewUrl(data.previewUrl)
       }
+      setFormState({ name: '', email: '', phone: '', project: '', message: '' })
     } catch (err) {
       console.error('Contact submit error:', err)
       setStatus('error')
