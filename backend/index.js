@@ -2,11 +2,16 @@ import { createClient } from '@supabase/supabase-js';
 
 export default {
   async fetch(request, env) {
+    // Echo the requesting Origin back so the browser accepts the preflight.
+    // Fall back to the configured frontend origin, then "*" if neither present.
+    const requestOrigin = request.headers.get("origin");
+    const allowedOrigin = requestOrigin || env.FRONTEND_ORIGIN || "*";
     const corsHeaders = {
-      "Access-Control-Allow-Origin": env.FRONTEND_ORIGIN || "*",
+      "Access-Control-Allow-Origin": allowedOrigin,
       "Access-Control-Allow-Methods": "POST,OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
       "Access-Control-Max-Age": "86400",
+      "Vary": "Origin",
     };
 
     if (request.method === "OPTIONS") {

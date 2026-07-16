@@ -8,7 +8,7 @@
     "dev": "wrangler dev"
   },
   "devDependencies": {
-    "wrangler": "^3.78.0"
+    "wrangler": "^4.111.0"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.7"
