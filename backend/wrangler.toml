@@ -1,22 +1,19 @@
 name = "abhay-creative-backend"
 main = "index.js"
-compatibility_date = "2025-01-01"
+compatibility_date = "2026-07-16" # Updated to today's date for compatibility
 workers_dev = true
 
-# Email Service Binding (Cloudflare Email Delivery)
-[[email]]
+# 1. Ensure the Email binding is properly defined
+# Note: Cloudflare Email Binding requires specific configuration depending on your plan
+[[send_email]]
 name = "EMAIL"
 
 [vars]
-# Frontend origin for CORS (Cloudflare Pages domain)
+# Frontend origin (Replace * with your actual Pages URL once deployed for security)
 FRONTEND_ORIGIN = "*"
 
-# Email recipients/senders (used by Worker env)
-EMAIL_TO = "abhayhegde643@gmail.com"
+# Contact Form settings
 CONTACT_TO = "abhayhegde643@gmail.com"
 CONTACT_FROM = "abhayhegde643@gmail.com"
 HIRE_TO = "abhayhegde643@gmail.com"
 HIRE_FROM = "abhayhegde643@gmail.com"
-
-# If your binding uses a different from override, you can set EMAIL_FROM / CONTACT_FROM / HIRE_FROM.
-
