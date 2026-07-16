@@ -1,0 +1,23 @@
+name = "abhay-creative-backend"
+main = "index.js"
+compatibility_date = "2025-01-01"
+workers_dev = true
+
+[vars]
+# Use env.MONGODB_URI in configuration (your Worker reads it).
+# For Worker-friendly persistence, optionally provide MONGODB_WRITE_URL.
+MONGODB_URI = "REPLACE_ME"
+MONGODB_WRITE_URL = "" # optional: HTTP endpoint that writes to MongoDB
+
+# Frontend origin for CORS (Cloudflare Pages domain)
+FRONTEND_ORIGIN = "*"
+
+# Email recipients/senders (used by Worker env)
+EMAIL_TO = "abhayhegde643@gmail.com"
+CONTACT_TO = "abhayhegde643@gmail.com"
+CONTACT_FROM = "abhayhegde643@gmail.com"
+HIRE_TO = "abhayhegde643@gmail.com"
+HIRE_FROM = "abhayhegde643@gmail.com"
+
+# If your binding uses a different from override, you can set EMAIL_FROM / CONTACT_FROM / HIRE_FROM.
+
