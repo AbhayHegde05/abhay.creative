@@ -28,14 +28,11 @@ name = "EMAIL"
 # Frontend origin (Replace * with your actual Pages URL once deployed for security)
 FRONTEND_ORIGIN = "https://abhay-creative.pages.dev"
 
-# MongoDB Data API Configuration
+# Supabase Configuration
 # Set these secrets using: npx wrangler secret put <SECRET_NAME>
 # Required secrets:
-# - MONGODB_DATA_API_URL: Your MongoDB Data API endpoint URL
-# - MONGODB_API_KEY: Your MongoDB Data API key
-# Optional secrets (defaults provided):
-# - MONGODB_DATA_SOURCE: Default "Cluster0"
-# - MONGODB_DATABASE: Default "portfolio"
+# - SUPABASE_URL: Your Supabase project URL
+# - SUPABASE_KEY: Your Supabase anon/public key (or service role key for admin access)
 
 # Contact Form settings
 CONTACT_TO = "abhayhegde643@gmail.com"

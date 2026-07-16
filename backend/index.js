@@ -1,3 +1,5 @@
+import { createClient } from '@supabase/supabase-js';
+
 export default {
   async fetch(request, env) {
     const corsHeaders = {
@@ -43,28 +45,24 @@ async function handleContact(request, env, corsHeaders) {
   }
 
   let storedInDatabase = false;
-  if (env.MONGODB_DATA_API_URL && env.MONGODB_API_KEY) {
+  if (env.SUPABASE_URL && env.SUPABASE_KEY) {
     try {
-      const response = await fetch(env.MONGODB_DATA_API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'api-key': env.MONGODB_API_KEY,
-        },
-        body: JSON.stringify({
-          dataSource: env.MONGODB_DATA_SOURCE || 'Cluster0',
-          database: env.MONGODB_DATABASE || 'portfolio',
-          collection: 'contact',
-          document: {
-            name,
-            email,
-            subject,
-            message,
-            createdAt: new Date().toISOString()
-          }
-        })
-      });
-      storedInDatabase = response.ok;
+      const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY);
+      const { error } = await supabase
+        .from('contact')
+        .insert({
+          name,
+          email,
+          subject,
+          message,
+          created_at: new Date().toISOString()
+        });
+      
+      if (!error) {
+        storedInDatabase = true;
+      } else {
+        console.error("Supabase error:", error);
+      }
     } catch (e) {
       console.error("Database write failed:", e);
       storedInDatabase = false;
@@ -119,31 +117,27 @@ async function handleHire(request, env, corsHeaders) {
   }
 
   let storedInDatabase = false;
-  if (env.MONGODB_DATA_API_URL && env.MONGODB_API_KEY) {
+  if (env.SUPABASE_URL && env.SUPABASE_KEY) {
     try {
-      const response = await fetch(env.MONGODB_DATA_API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'api-key': env.MONGODB_API_KEY,
-        },
-        body: JSON.stringify({
-          dataSource: env.MONGODB_DATA_SOURCE || 'Cluster0',
-          database: env.MONGODB_DATABASE || 'portfolio',
-          collection: 'hire',
-          document: {
-            name,
-            email,
-            phone,
-            service,
-            budget,
-            timeline,
-            details,
-            createdAt: new Date().toISOString()
-          }
-        })
-      });
-      storedInDatabase = response.ok;
+      const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY);
+      const { error } = await supabase
+        .from('hire')
+        .insert({
+          name,
+          email,
+          phone,
+          service,
+          budget,
+          timeline,
+          details,
+          created_at: new Date().toISOString()
+        });
+      
+      if (!error) {
+        storedInDatabase = true;
+      } else {
+        console.error("Supabase error:", error);
+      }
     } catch (e) {
       console.error("Database write failed:", e);
       storedInDatabase = false;
