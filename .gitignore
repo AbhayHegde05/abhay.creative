@@ -39,10 +39,12 @@ Thumbs.db
 coverage/
 
 # Secrets / config containing credentials (use wrangler.example.toml as the safe template)
-backend/wrangler.toml
 
 # wrangler files
 .wrangler
 .dev.vars*
 !.dev.vars.example
 !.env.example
+
+# wrangler local cache
+.wrangler/
