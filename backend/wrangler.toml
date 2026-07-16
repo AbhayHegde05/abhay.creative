@@ -3,12 +3,11 @@ main = "index.js"
 compatibility_date = "2025-01-01"
 workers_dev = true
 
-[vars]
-# Use env.MONGODB_URI in configuration (your Worker reads it).
-# For Worker-friendly persistence, optionally provide MONGODB_WRITE_URL.
-MONGODB_URI = "REPLACE_ME"
-MONGODB_WRITE_URL = "" # optional: HTTP endpoint that writes to MongoDB
+# Email Service Binding (Cloudflare Email Delivery)
+[[email]]
+name = "EMAIL"
 
+[vars]
 # Frontend origin for CORS (Cloudflare Pages domain)
 FRONTEND_ORIGIN = "*"
 
