@@ -78,7 +78,6 @@ async function handleContact(request, env, corsHeaders) {
 
   const to = env.CONTACT_TO || env.EMAIL_TO;
   if (!to) return json({ error: "Missing CONTACT_TO/EMAIL_TO." }, 500, corsHeaders);
-  if (!env.EMAIL) return json({ error: "Missing env.EMAIL binding." }, 500, corsHeaders);
 
   const emailSubject = `📬 Contact: ${subject} — ${name}`;
   const emailText = [
@@ -160,7 +159,6 @@ async function handleHire(request, env, corsHeaders) {
 
   const to = env.HIRE_TO || env.EMAIL_TO;
   if (!to) return json({ error: "Missing HIRE_TO/EMAIL_TO." }, 500, corsHeaders);
-  if (!env.EMAIL) return json({ error: "Missing env.EMAIL binding." }, 500, corsHeaders);
 
   const emailSubject = `💼 Hire Request: ${service} — ${name}`;
   const emailText = [
