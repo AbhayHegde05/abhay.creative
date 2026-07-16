@@ -1,0 +1,32 @@
+name = "abhay-creative-backend"
+main = "index.js"
+compatibility_date = "2026-07-16"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[observability]
+enabled = false
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
+
+[[send_email]]
+name = "EMAIL"
+
+[vars]
+FRONTEND_ORIGIN = "https://abhay-creative.pages.dev"
+
+# Contact Form settings
+CONTACT_TO = "your-email@example.com"
+CONTACT_FROM = "onboarding@resend.dev"
+HIRE_TO = "your-email@example.com"
+HIRE_FROM = "onboarding@resend.dev"
+
+# Supabase Configuration (set these as vars in your LOCAL wrangler.toml, which is gitignored)
+# SUPABASE_URL = "https://your-project-ref.supabase.co"
+# SUPABASE_KEY = "your-supabase-anon-key"
+# RESEND_API_KEY = "re_xxxxxxxxxxxxxxxxxxxxxxxx"

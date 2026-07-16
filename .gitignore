@@ -37,3 +37,6 @@ Thumbs.db
 # Misc
 .cache/
 coverage/
+
+# Secrets / config containing credentials (use wrangler.example.toml as the safe template)
+backend/wrangler.toml
