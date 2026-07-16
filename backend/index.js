@@ -1,5 +1,3 @@
-import { MongoClient } from 'mongodb';
-
 export default {
   async fetch(request, env) {
     const corsHeaders = {
@@ -45,22 +43,32 @@ async function handleContact(request, env, corsHeaders) {
   }
 
   let storedInDatabase = false;
-  try {
-    const client = new MongoClient(env.MONGODB_URI);
-    await client.connect();
-    const db = client.db();
-    await db.collection("contact").insertOne({
-      name,
-      email,
-      subject,
-      message,
-      createdAt: new Date().toISOString()
-    });
-    await client.close();
-    storedInDatabase = true;
-  } catch (e) {
-    console.error("Database write failed:", e);
-    storedInDatabase = false;
+  if (env.MONGODB_DATA_API_URL && env.MONGODB_API_KEY) {
+    try {
+      const response = await fetch(env.MONGODB_DATA_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'api-key': env.MONGODB_API_KEY,
+        },
+        body: JSON.stringify({
+          dataSource: env.MONGODB_DATA_SOURCE || 'Cluster0',
+          database: env.MONGODB_DATABASE || 'portfolio',
+          collection: 'contact',
+          document: {
+            name,
+            email,
+            subject,
+            message,
+            createdAt: new Date().toISOString()
+          }
+        })
+      });
+      storedInDatabase = response.ok;
+    } catch (e) {
+      console.error("Database write failed:", e);
+      storedInDatabase = false;
+    }
   }
 
   const to = env.CONTACT_TO || env.EMAIL_TO;
@@ -111,25 +119,35 @@ async function handleHire(request, env, corsHeaders) {
   }
 
   let storedInDatabase = false;
-  try {
-    const client = new MongoClient(env.MONGODB_URI);
-    await client.connect();
-    const db = client.db();
-    await db.collection("hire").insertOne({
-      name,
-      email,
-      phone,
-      service,
-      budget,
-      timeline,
-      details,
-      createdAt: new Date().toISOString()
-    });
-    await client.close();
-    storedInDatabase = true;
-  } catch (e) {
-    console.error("Database write failed:", e);
-    storedInDatabase = false;
+  if (env.MONGODB_DATA_API_URL && env.MONGODB_API_KEY) {
+    try {
+      const response = await fetch(env.MONGODB_DATA_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'api-key': env.MONGODB_API_KEY,
+        },
+        body: JSON.stringify({
+          dataSource: env.MONGODB_DATA_SOURCE || 'Cluster0',
+          database: env.MONGODB_DATABASE || 'portfolio',
+          collection: 'hire',
+          document: {
+            name,
+            email,
+            phone,
+            service,
+            budget,
+            timeline,
+            details,
+            createdAt: new Date().toISOString()
+          }
+        })
+      });
+      storedInDatabase = response.ok;
+    } catch (e) {
+      console.error("Database write failed:", e);
+      storedInDatabase = false;
+    }
   }
 
   const to = env.HIRE_TO || env.EMAIL_TO;
