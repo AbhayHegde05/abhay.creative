@@ -35,7 +35,7 @@ FRONTEND_ORIGIN = "https://abhay-creative.pages.dev"
 # - SUPABASE_KEY: Your Supabase anon/public key (or service role key for admin access)
 
 # Contact Form settings
-CONTACT_TO = "abhayhegde643@gmail.com"
-CONTACT_FROM = "abhayhegde643@gmail.com"
-HIRE_TO = "abhayhegde643@gmail.com"
-HIRE_FROM = "abhayhegde643@gmail.com"
+CONTACT_TO = "abhayhegde36@gmail.com"
+CONTACT_FROM = "onboarding@resend.dev"
+HIRE_TO = "abhayhegde36@gmail.com"
+HIRE_FROM = "onboarding@resend.dev"

@@ -93,14 +93,13 @@ async function handleContact(request, env, corsHeaders) {
 
   let emailNotification = false;
   try {
-    await env.EMAIL.send({
+    emailNotification = await sendEmail(env, {
       to,
-      from: env.CONTACT_FROM || env.EMAIL_FROM || to,
+      from: env.CONTACT_FROM || "onboarding@resend.dev",
       subject: emailSubject,
       text: emailText,
       html: emailHtml,
     });
-    emailNotification = true;
   } catch (emailErr) {
     console.error("Email send failed (DB insert still attempted):", emailErr);
   }
@@ -179,14 +178,13 @@ async function handleHire(request, env, corsHeaders) {
 
   let emailNotification = false;
   try {
-    await env.EMAIL.send({
+    emailNotification = await sendEmail(env, {
       to,
-      from: env.HIRE_FROM || env.EMAIL_FROM || to,
+      from: env.HIRE_FROM || "onboarding@resend.dev",
       subject: emailSubject,
       text: emailText,
       html: emailHtml,
     });
-    emailNotification = true;
   } catch (emailErr) {
     console.error("Email send failed (DB insert still attempted):", emailErr);
   }
@@ -213,4 +211,26 @@ function escapeHtml(s) {
     .replaceAll(">", ">")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+async function sendEmail(env, { to, from, subject, text, html }) {
+  if (!env.RESEND_API_KEY) {
+    console.error("Missing RESEND_API_KEY; skipping email.");
+    return false;
+  }
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ to, from, subject, text, html }),
+  });
+
+  if (!res.ok) {
+    const errBody = await res.text().catch(() => "");
+    console.error("Resend API error:", res.status, errBody);
+    return false;
+  }
+  return true;
 }
