@@ -171,11 +171,10 @@ export default function HireModal({ isOpen, onClose }) {
                       <option value="Posters">Premium Posters</option>
                       <option value="Custom Project">Custom Creatives</option>
                     </select>
-                    <select name="budget" required value={formData.budget} onChange={handleInputChange} className="w-full px-4 py-3 rounded-xl bg-card border border-white/10 text-text text-sm">
-                      <option value="">Select budget</option>
-                      <option value="Under $200">Under $200</option>
-                      <option value="$200 - $500">$200 - $500</option>
-                    </select>
+                    <div className="w-full">
+                      <input type="text" name="budget" required value={formData.budget} onChange={handleInputChange} placeholder="e.g. 5000" className="w-full px-4 py-3 rounded-xl bg-card border border-white/10 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all text-text text-sm" />
+                      <p className="text-xs text-muted mt-1.5">Enter the amount you'd like to pay (in Indian Rupees ₹).</p>
+                    </div>
                   </div>
                   <textarea name="details" required rows={4} value={formData.details} onChange={handleInputChange} placeholder="Project Details..." className="w-full px-4 py-3 rounded-xl bg-card border border-white/10 focus:border-primary text-text text-sm" />
 
